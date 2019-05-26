@@ -38,6 +38,7 @@ import java.io.IOException
 import java.util.*
 
 enum class OsType { WIN,
+    LNXARM,
     LNX32,
     LNX64,
     MACOS,
@@ -80,6 +81,9 @@ enum class OsType { WIN,
                     throw  RuntimeException("Uname returned error code $exit")
                 }
 
+                if (unameOutput.matches(Regex("arm.+"))) {
+                    return LNXARM
+                }
                 if (unameOutput.matches(Regex("i.86"))) {
                     return LNX32
                 }
@@ -99,7 +103,6 @@ enum class OsType { WIN,
     }
 
     fun isUnixoid(): Boolean {
-        return listOf(LNX32, LNX64, MACOS).contains(this)
+        return listOf(LNXARM, LNX32, LNX64, MACOS).contains(this)
     }
 }
-
